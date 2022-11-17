@@ -43,6 +43,19 @@ public class StudentCourse {
 	public StudentCourse() {
 	}
 
+	public StudentCourse(String id, String studentId, String studentName, String courseCode, String courseName, String courseDay,
+			LocalTime courseStart, LocalTime courseEnd, int credit) {
+		this.id = id;
+		this.studentId = studentId;
+		this.studentName = studentName;
+		this.courseCode = courseCode;
+		this.courseName = courseName;
+		this.courseDay = courseDay;
+		this.courseStart = courseStart;
+		this.courseEnd = courseEnd;
+		this.credit = credit;
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -8,19 +8,19 @@ public class CourseRequest {
 
 	//在外部輸入的請求
 	@JsonProperty("coursecode")
-	private String coursecode;
+	private String courseCode;
 
 	@JsonProperty("coursename")
-	private String coursename;
+	private String courseName;
 
 	@JsonProperty("courseday")
-	private String courseday;
+	private String courseDay;
 
 	@JsonProperty("coursestart")
-	private LocalTime coursestart;
+	private LocalTime courseStart;
 
 	@JsonProperty("courseend")
-	private LocalTime courseend;
+	private LocalTime courseEnd;
 
 	@JsonProperty("credit")
 	private Integer credit;
@@ -28,44 +28,44 @@ public class CourseRequest {
 	public CourseRequest() {
 	}
 
-	public String getCoursecode() {
-		return coursecode;
+	public String getCourseCode() {
+		return courseCode;
 	}
 
-	public void setCoursecode(String coursecode) {
-		this.coursecode = coursecode;
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
-	public String getCoursename() {
-		return coursename;
+	public String getCourseName() {
+		return courseName;
 	}
 
-	public void setCoursename(String coursename) {
-		this.coursename = coursename;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
-	public String getCourseday() {
-		return courseday;
+	public String getCourseDay() {
+		return courseDay;
 	}
 
-	public void setCourseday(String courseday) {
-		this.courseday = courseday;
+	public void setCourseDay(String courseDay) {
+		this.courseDay = courseDay;
 	}
 
-	public LocalTime getCoursestart() {
-		return coursestart;
+	public LocalTime getCourseStart() {
+		return courseStart;
 	}
 
-	public void setCoursestart(LocalTime coursestart) {
-		this.coursestart = coursestart;
+	public void setCourseStart(LocalTime courseStart) {
+		this.courseStart = courseStart;
 	}
 
-	public LocalTime getCourseend() {
-		return courseend;
+	public LocalTime getCourseEnd() {
+		return courseEnd;
 	}
 
-	public void setCourseend(LocalTime courseend) {
-		this.courseend = courseend;
+	public void setCourseEnd(LocalTime courseEnd) {
+		this.courseEnd = courseEnd;
 	}
 
 	public Integer getCredit() {

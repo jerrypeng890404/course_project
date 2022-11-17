@@ -11,19 +11,19 @@ public class StudentResponse {
 
 	private String id;
 
-	private String studentid;
+	private String studentId;
 
-	private String studentname;
+	private String studentName;
 
-	private String coursecode;
+	private String courseCode;
 
-	private String coursename;
+	private String courseName;
 
-	private String courseday;
+	private String courseDay;
 
-	private LocalTime coursestart;
+	private LocalTime courseStart;
 
-	private LocalTime courseend;
+	private LocalTime courseEnd;
 
 	private Integer credit;
 
@@ -33,7 +33,7 @@ public class StudentResponse {
 	
 	public StudentResponse() {
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -42,60 +42,60 @@ public class StudentResponse {
 		this.id = id;
 	}
 
-	public String getStudentid() {
-		return studentid;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStudentid(String studentid) {
-		this.studentid = studentid;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
-	public String getStudentname() {
-		return studentname;
+	public String getStudentName() {
+		return studentName;
 	}
 
-	public void setStudentname(String studentname) {
-		this.studentname = studentname;
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
-	public String getCoursecode() {
-		return coursecode;
+	public String getCourseCode() {
+		return courseCode;
 	}
 
-	public void setCoursecode(String coursecode) {
-		this.coursecode = coursecode;
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
-	public String getCoursename() {
-		return coursename;
+	public String getCourseName() {
+		return courseName;
 	}
 
-	public void setCoursename(String coursename) {
-		this.coursename = coursename;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
-	public String getCourseday() {
-		return courseday;
+	public String getCourseDay() {
+		return courseDay;
 	}
 
-	public void setCourseday(String courseday) {
-		this.courseday = courseday;
+	public void setCourseDay(String courseDay) {
+		this.courseDay = courseDay;
 	}
 
-	public LocalTime getCoursestart() {
-		return coursestart;
+	public LocalTime getCourseStart() {
+		return courseStart;
 	}
 
-	public void setCoursestart(LocalTime coursestart) {
-		this.coursestart = coursestart;
+	public void setCourseStart(LocalTime courseStart) {
+		this.courseStart = courseStart;
 	}
 
-	public LocalTime getCourseend() {
-		return courseend;
+	public LocalTime getCourseEnd() {
+		return courseEnd;
 	}
 
-	public void setCourseend(LocalTime courseend) {
-		this.courseend = courseend;
+	public void setCourseEnd(LocalTime courseEnd) {
+		this.courseEnd = courseEnd;
 	}
 
 	public Integer getCredit() {

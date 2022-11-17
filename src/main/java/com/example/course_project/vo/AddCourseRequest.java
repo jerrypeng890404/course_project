@@ -8,20 +8,20 @@ public class AddCourseRequest {
 	private String id;
 
 	@JsonProperty("studentid")
-	private String studentid;
+	private String studentId;
 
 	@JsonProperty("studentname")
-	private String studentname;
+	private String studentName;
 	
 	@JsonProperty("coursecode")
-	private String coursecode;
+	private String courseCode;
 
 	@JsonProperty("coursename")
-	private String coursename;
+	private String courseName;
 	
 	public AddCourseRequest() {
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -30,36 +30,36 @@ public class AddCourseRequest {
 		this.id = id;
 	}
 
-	public String getStudentid() {
-		return studentid;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStudentid(String studentid) {
-		this.studentid = studentid;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
-	public String getStudentname() {
-		return studentname;
+	public String getStudentName() {
+		return studentName;
 	}
 
-	public void setStudentname(String studentname) {
-		this.studentname = studentname;
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
-	public String getCoursecode() {
-		return coursecode;
+	public String getCourseCode() {
+		return courseCode;
 	}
 
-	public void setCoursecode(String coursecode) {
-		this.coursecode = coursecode;
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
-	public String getCoursename() {
-		return coursename;
+	public String getCourseName() {
+		return courseName;
 	}
 
-	public void setCoursename(String coursename) {
-		this.coursename = coursename;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
-
+	
 }

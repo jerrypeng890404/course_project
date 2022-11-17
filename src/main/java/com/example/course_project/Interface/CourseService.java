@@ -1,34 +1,35 @@
 package com.example.course_project.Interface;
 
-import java.time.LocalTime;
-
+import com.example.course_project.vo.AddCourseRequest;
 import com.example.course_project.vo.AddCourseResponse;
+import com.example.course_project.vo.CourseRequest;
 import com.example.course_project.vo.CourseResponse;
 import com.example.course_project.vo.StudentResponse;
 
 public interface CourseService {
 
-	// 課程
-	public CourseResponse createCourse(String coursecode, String coursename, String courseday, LocalTime coursestart,
-			LocalTime courseend, Integer credit);
+	//新增課程
+	public CourseResponse createCourse(CourseRequest req);
 
-	public CourseResponse reviseCourse(String coursecode, String coursename, String courseday, LocalTime coursestart,
-			LocalTime courseend, Integer credit);
+	//修改課程
+	public CourseResponse reviseCourse(CourseRequest req);
 
-	public CourseResponse deleteCourseById(String coursecode);
+	//刪除課程
+	public CourseResponse deleteCourseById(String courseCode);
 
-	public AddCourseResponse findCourseByCode(String coursecode);
+	//透過課程代碼找課程
+	public AddCourseResponse findCourseByCode(String courseCode);
 
-	public AddCourseResponse findCourseByName(String coursename);
-//===============================================================
+	//透過課程名稱找課程
+	public AddCourseResponse findCourseByName(String courseName);
 
-	// 學生
-//	public StudentCourse addStudent(String id, String studentId, String studentName);
+	//學生選課
+	public AddCourseResponse addCourse(AddCourseRequest req);
 
-	public AddCourseResponse addCourse(String id, String studentid, String studentname, String coursecode);
+	//學生退課
+	public AddCourseResponse dropCourse(String studentId, String courseCode);
 
-	public AddCourseResponse dropCourse(String studentid, String coursecode);
-
+	//透過學生學號找學生所選課程
 	public StudentResponse findStudentLesson(String studentId);
 
 }

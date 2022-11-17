@@ -7,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.course_project.vo.CourseRequest;
+
 //³s±µSQL
 @Entity
 @Table(name = "course")
 public class Course {
-	
+
 	@Id
 	@Column(name = "course_code")
 	private String courseCode;
@@ -27,11 +29,20 @@ public class Course {
 
 	@Column(name = "course_end")
 	private LocalTime courseEnd;
-	
+
 	@Column(name = "credit")
 	private Integer credit;
 
 	public Course() {
+	}
+
+	public Course(CourseRequest req) {
+		this.courseCode = req.getCourseCode();
+		this.courseName = req.getCourseName();
+		this.courseDay = req.getCourseDay();
+		this.courseStart = req.getCourseStart();
+		this.courseEnd = req.getCourseEnd();
+		this.credit = req.getCredit();
 	}
 
 	public String getCourseCode() {
@@ -81,6 +92,5 @@ public class Course {
 	public void setCredit(Integer credit) {
 		this.credit = credit;
 	}
-	
-	
+
 }

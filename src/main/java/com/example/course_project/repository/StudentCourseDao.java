@@ -17,17 +17,13 @@ public interface StudentCourseDao extends JpaRepository<StudentCourse, String> {
 	
 	public List<StudentCourse> findAllByStudentId(String studentId);
 	
-	public List<StudentCourse> findByStudentId(String studentid);
+	public List<StudentCourse> findByStudentId(String studentId);
 	
-	public List<StudentCourse> findCourseByCourseCode(String coursecode);
+	public List<StudentCourse> findCourseByCourseCode(String courseCode);
 	
-	//自訂義方法加上
+	//自訂義刪除方法加上
 	@Modifying
 	@Transactional
-	public Optional<StudentCourse> deleteByCourseCode(String coursecode);
+	public Optional<StudentCourse> deleteByCourseCode(String courseCode);
 	
-	//自訂義方法加上
-//	@Modifying
-//	@Transactional
-//	public Optional<StudentCourse> deleteByStudentId(String studentId);
 }
