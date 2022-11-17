@@ -9,10 +9,19 @@ import javax.persistence.Table;
 
 //³s±µSQL
 @Entity
-@Table(name = "course")
-public class Course {
-	
+@Table(name = "student_course")
+public class StudentCourse {
+
 	@Id
+	@Column(name = "id")
+	private String id;
+
+	@Column(name = "student_id")
+	private String studentId;
+
+	@Column(name = "student_name")
+	private String studentName;
+
 	@Column(name = "course_code")
 	private String courseCode;
 
@@ -27,11 +36,35 @@ public class Course {
 
 	@Column(name = "course_end")
 	private LocalTime courseEnd;
-	
-	@Column(name = "credit")
-	private Integer credit;
 
-	public Course() {
+	@Column(name = "credit")
+	private int credit;
+
+	public StudentCourse() {
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
 	public String getCourseCode() {
@@ -74,13 +107,12 @@ public class Course {
 		this.courseEnd = courseEnd;
 	}
 
-	public Integer getCredit() {
+	public int getCredit() {
 		return credit;
 	}
 
-	public void setCredit(Integer credit) {
+	public void setCredit(int credit) {
 		this.credit = credit;
 	}
-	
-	
+
 }
