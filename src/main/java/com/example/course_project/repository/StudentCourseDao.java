@@ -15,13 +15,13 @@ import com.example.course_project.entity.StudentCourse;
 @Repository                                           //連接Entity
 public interface StudentCourseDao extends JpaRepository<StudentCourse, String> {
 	
-	public List<StudentCourse> findAllByStudentId(String studentId);
-	
 	public List<StudentCourse> findByStudentId(String studentId);
+	
+	public List<StudentCourse> findAllByStudentId(String studentId);
 	
 	public List<StudentCourse> findCourseByCourseCode(String courseCode);
 	
-	//自訂義刪除方法加上
+	//自定義刪除方法加上
 	@Modifying
 	@Transactional
 	public Optional<StudentCourse> deleteByCourseCode(String courseCode);

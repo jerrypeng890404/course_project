@@ -1,6 +1,7 @@
 package com.example.course_project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,17 +14,17 @@ import com.example.course_project.vo.CourseResponse;
 import com.example.course_project.vo.StudentRequest;
 import com.example.course_project.vo.StudentResponse;
 
+@CrossOrigin
 //接收請求與給予回應
 @RestController
 public class CourseController {
 
-	// 到Service尋求方法用
+	// 連接Service方法
 	@Autowired
 	private CourseService courseService;
 	
 	@PostMapping(value = "/api/createcourse")
 	public CourseResponse createCourse(@RequestBody CourseRequest req) {
-		// 新增容器裝透過方法輸入的參數
 		return courseService.createCourse(req);
 	}
 
@@ -32,9 +33,9 @@ public class CourseController {
 		return courseService.reviseCourse(req);
 	}
 
-	@PostMapping(value = "/api/deletecourse")
+	@PostMapping(value = "/api/deletecoursebycode")
 	public CourseResponse deleteById(@RequestBody CourseRequest req) {
-		return courseService.deleteCourseById(req.getCourseCode());
+		return courseService.deleteCourseByCode(req.getCourseCode());
 	}
 
 	@PostMapping(value = "/api/findcoursebycode")
@@ -47,19 +48,19 @@ public class CourseController {
 		return courseService.findCourseByName(req.getCourseName());
 	}
 
-	@PostMapping(value = "/api/addcourse")
+	@PostMapping(value = "/api/addstudentcourse")
 	public AddCourseResponse addCourse(@RequestBody AddCourseRequest req) {
-		return courseService.addCourse(req);
+		return courseService.addStudentCourse(req);
 	}
 
-	@PostMapping(value = "/api/dropcourse")
+	@PostMapping(value = "/api/dropstudentcourse")
 	public AddCourseResponse dropCourse(@RequestBody AddCourseRequest req) {
-		return courseService.dropCourse(req.getStudentId(), req.getCourseCode());
+		return courseService.dropStudentCourse(req.getStudentId(), req.getCourseCode());
 	}
 
-	@PostMapping(value = "/api/findstudentlesson")
-	public StudentResponse findStudentLesson(@RequestBody StudentRequest req) {
-		return courseService.findStudentLesson(req.getStudentId());
+	@PostMapping(value = "/api/findstudentcourse")
+	public StudentResponse findStudentCourse(@RequestBody StudentRequest req) {
+		return courseService.findStudentCourse(req.getStudentId());
 	}
 
 }

@@ -4,7 +4,7 @@ public enum CourseRtnCode {
 
 	SUCCESSFUL("200", "Successful"),
 	
-	SELECT_COURSE_ERROR("400", "Select course error!!"),
+	SELECT_COURSE_FAILED("400", "Select course failed!!"),
 	
 	DELETE_COURSE_FAILED("400", "Delete course failed!!"),
 	
@@ -22,7 +22,7 @@ public enum CourseRtnCode {
 	
 	COURSEDAY_REQUIRED("400", "Courseday is required!!"),
 	
-	COURSEDAY_ERROR("400", "Courseday is error!!"),
+	COURSEDAY_FAILED("400", "Courseday is failed!!"),
 	
 	COURSESTARTTIME_REQUIRED("400", "Coursestarttime is required!!"),
 	

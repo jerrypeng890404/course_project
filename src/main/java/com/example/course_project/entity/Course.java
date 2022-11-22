@@ -36,6 +36,7 @@ public class Course {
 	public Course() {
 	}
 
+	//«Øºc¤èªk
 	public Course(CourseRequest req) {
 		this.courseCode = req.getCourseCode();
 		this.courseName = req.getCourseName();

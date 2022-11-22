@@ -30,6 +30,8 @@ public class AddCourseResponse {
 	private String message;
 	
 	private List<Course> courseList;
+	
+	private Course courseInfo;
 
 	public AddCourseResponse() {
 	}
@@ -120,6 +122,14 @@ public class AddCourseResponse {
 
 	public void setCourseList(List<Course> courseList) {
 		this.courseList = courseList;
+	}
+
+	public Course getCourseInfo() {
+		return courseInfo;
+	}
+
+	public void setCourseInfo(Course courseInfo) {
+		this.courseInfo = courseInfo;
 	}
 	
 }

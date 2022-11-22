@@ -14,9 +14,6 @@ public class StudentRequest {
 
 	@JsonProperty("student_id")
 	private String studentId;
-	
-//	@JsonProperty("studentId")
-//	private String studentId;
 
 	@JsonProperty("student_name")
 	private String studentName;

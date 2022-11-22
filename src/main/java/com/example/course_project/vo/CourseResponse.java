@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CourseResponse {
-	
+
 	private String courseCode;
 
 	private String courseName;
@@ -22,10 +22,19 @@ public class CourseResponse {
 	private Integer credit;
 
 	private String message;
-	
+
 	private List<Course> courseList;
-	
+
 	public CourseResponse() {
+	}
+
+	public CourseResponse(CourseRequest req) {
+		this.courseCode = req.getCourseCode();
+		this.courseName = req.getCourseName();
+		this.courseDay = req.getCourseDay();
+		this.courseStart = req.getCourseStart();
+		this.courseEnd = req.getCourseEnd();
+		this.credit = req.getCredit();
 	}
 
 	public String getCourseCode() {

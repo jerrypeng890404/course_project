@@ -38,13 +38,13 @@ public class StudentCourse {
 	private LocalTime courseEnd;
 
 	@Column(name = "credit")
-	private int credit;
+	private Integer credit;
 
 	public StudentCourse() {
 	}
 
 	public StudentCourse(String id, String studentId, String studentName, String courseCode, String courseName, String courseDay,
-			LocalTime courseStart, LocalTime courseEnd, int credit) {
+			LocalTime courseStart, LocalTime courseEnd, Integer credit) {
 		this.id = id;
 		this.studentId = studentId;
 		this.studentName = studentName;
@@ -120,11 +120,11 @@ public class StudentCourse {
 		this.courseEnd = courseEnd;
 	}
 
-	public int getCredit() {
+	public Integer getCredit() {
 		return credit;
 	}
 
-	public void setCredit(int credit) {
+	public void setCredit(Integer credit) {
 		this.credit = credit;
 	}
 

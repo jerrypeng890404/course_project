@@ -32,46 +32,36 @@ public class CourseServiceImpl implements CourseService {
 	// 新增課程
 	@Override
 	public CourseResponse createCourse(CourseRequest req) {
-		// 新增回應回傳容器
-		CourseResponse res = new CourseResponse();
 
-		// 抽出防呆方法
-		res = checkCourseInput(req, res);
+		// 新增容器來接私有防呆方法(防止輸入值為空)
+		CourseResponse res = checkCourseInput(req);
+		// 出現錯誤訊息時進入
 		if (StringUtils.hasText(res.getMessage())) {
 			return res;
 		}
 
-		// 暫存以主鍵找到的欄位資訊
-		List<Course> courseOp = courseDao.findByCourseCode(req.getCourseCode());
-		// 遍歷資料庫中找到的欄位資訊並新增容器"courselist"放入
-		for (Course courselist : courseOp) {
-			// 防呆:課程代碼不可相同 如果輸入代碼等於資料庫中代碼時進入 //在新增容器"courselist"中的欄位資訊裡取課程代碼
-			if (req.getCourseCode().equalsIgnoreCase(courselist.getCourseCode())) {
-				res.setMessage(CourseRtnCode.COURSECODE_REPEAT.getMessage());
-				return res;
-			}
+		// 判斷課程資料庫中課程代碼是否和輸入課程代碼重複
+		if (courseDao.existsById(req.getCourseCode())) {
+			res.setMessage(CourseRtnCode.COURSECODE_REPEAT.getMessage());
+			return res;
 		}
 
-		// 新增entity回傳容器(Course)
+		// 新增回傳型態為Course的建構方法放入課程資訊參數
 		Course course = new Course(req);
 		// 存入資料庫
 		courseDao.save(course);
-		
-		// 設定回傳欄位資訊
-		res.setCourseCode(course.getCourseCode());
-		res.setCourseName(course.getCourseName());
-		res.setCourseDay(course.getCourseDay());
-		res.setCourseStart(course.getCourseStart());
-		res.setCourseEnd(course.getCourseEnd());
-		res.setCredit(course.getCredit());
-		res.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
 
+		// 新增回傳型態為CourseResponse的建構方法容器放入輸入課程資訊
+		CourseResponse courseRes = new CourseResponse(req);
+		courseRes.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
 		// 回傳回應容器
-		return res;
+		return courseRes;
 	}
 
-	private CourseResponse checkCourseInput(CourseRequest req, CourseResponse res) {
-		// 防呆:輸入請求不得為空
+	// 私有防呆方法(防止輸入值為空)
+	private CourseResponse checkCourseInput(CourseRequest req) {
+		CourseResponse res = new CourseResponse();
+
 		if (!StringUtils.hasText(req.getCourseCode())) {
 			res.setMessage(CourseRtnCode.COURSECODE_REQUIRED.getMessage());
 			return res;
@@ -84,7 +74,8 @@ public class CourseServiceImpl implements CourseService {
 			res.setMessage(CourseRtnCode.COURSEDAY_REQUIRED.getMessage());
 			return res;
 		}
-		// 限制使用者輸入星期
+
+		// 限制使用者輸入星期幾
 		List<String> checkDay = new ArrayList<>();
 		checkDay.add("MON");
 		checkDay.add("TUE");
@@ -93,7 +84,7 @@ public class CourseServiceImpl implements CourseService {
 		checkDay.add("FRI");
 
 		if (!checkDay.stream().anyMatch(day -> day.equalsIgnoreCase(req.getCourseDay()))) {
-			res.setMessage(CourseRtnCode.COURSEDAY_ERROR.getMessage());
+			res.setMessage(CourseRtnCode.COURSEDAY_FAILED.getMessage());
 			return res;
 		}
 		if (req.getCourseStart() == null) {
@@ -115,10 +106,10 @@ public class CourseServiceImpl implements CourseService {
 	// 修改課程
 	@Override
 	public CourseResponse reviseCourse(CourseRequest req) {
-		// 新增回應回傳容器
-		CourseResponse res = new CourseResponse();
-		// 抽出防呆方法
-		res = checkCourseInput(req, res);
+		
+		// 新增回傳型態為CourseResponse的容器來接私有防呆方法(防止輸入值為空)
+		CourseResponse res = checkCourseInput(req);
+		// 如出現錯誤訊息時進入
 		if (StringUtils.hasText(res.getMessage())) {
 			return res;
 		}
@@ -127,10 +118,11 @@ public class CourseServiceImpl implements CourseService {
 		Optional<Course> courseOp = courseDao.findById(req.getCourseCode());
 		// 判斷容器中資料存在時進入
 		if (courseOp.isPresent()) {
-			// 取得新增容器中欄位資訊
+
+			// 新增容器將透過主鍵找到的欄位資訊放入
 			Course course = courseOp.get();
-			// 將容器中原有欄位資訊覆蓋為輸入資訊
-			course.setCourseCode(req.getCourseCode());
+
+			// 輸入課程資訊覆蓋原有課程資訊
 			course.setCourseName(req.getCourseName());
 			course.setCourseDay(req.getCourseDay());
 			course.setCourseStart(req.getCourseStart());
@@ -138,16 +130,12 @@ public class CourseServiceImpl implements CourseService {
 			course.setCredit(req.getCredit());
 			// 儲存覆蓋資訊
 			courseDao.save(course);
-			// 設定更改資訊
-			res.setCourseCode(req.getCourseCode());
-			res.setCourseName(req.getCourseName());
-			res.setCourseDay(req.getCourseDay());
-			res.setCourseStart(req.getCourseStart());
-			res.setCourseEnd(req.getCourseEnd());
-			res.setCredit(req.getCredit());
-			res.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
+
+			// 設定更改課程訊息
+			CourseResponse courseRes = new CourseResponse(req);
+			courseRes.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
 			// 回傳更改資訊
-			return res;
+			return courseRes;
 		}
 		// 不存在時的錯誤訊息
 		res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
@@ -158,25 +146,25 @@ public class CourseServiceImpl implements CourseService {
 	// ===================================================================================================
 	// 刪除課程
 	@Override
-	public CourseResponse deleteCourseById(String courseCode) {
+	public CourseResponse deleteCourseByCode(String courseCode) {
 		// 新增回應回傳容器
 		CourseResponse res = new CourseResponse();
+		
 		// 防呆:輸入請求不得為空
 		if (!StringUtils.hasText(courseCode)) {
 			res.setMessage(CourseRtnCode.COURSECODE_REQUIRED.getMessage());
 			return res;
 		}
-		// 透過課程代碼找到課程放入暫存容器
-		Optional<Course> courseOp = courseDao.findById(courseCode);
-		if (!courseOp.isPresent()) {
+
+		// 判斷在資料庫中輸入課程代碼是否存在
+		if (courseDao.existsById(courseCode)) {
+			// 存在時刪除
+			courseDao.deleteById(courseCode);
+		} else {
 			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
 			return res;
 		}
-		// 如果此容器中有資料 //StringUtils.hasText --> 如果值為null或空字串回傳false
-		if (courseOp.isPresent() || !StringUtils.hasText(courseCode)) {
-			// 刪除
-			courseDao.deleteById(courseCode);
-		}
+
 		// 設定刪除成功訊息
 		res.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
 		// 回傳
@@ -184,57 +172,63 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	// ===================================================================================================
-	// 透過課程代碼找課程
+	// 透過課程代碼找到課程
 	@Override
 	public AddCourseResponse findCourseByCode(String courseCode) {
 		// 新增回應回傳容器
 		AddCourseResponse res = new AddCourseResponse();
+		
 		// 防呆:輸入請求不得為空
 		if (!StringUtils.hasText(courseCode)) {
 			res.setMessage(CourseRtnCode.COURSECODE_REQUIRED.getMessage());
 			return res;
 		}
+
 		// 透過課程代碼(PK)找相對課程資訊存入
 		Optional<Course> courseOp = courseDao.findById(courseCode);
-		// 如果課程欄位資訊不存在
+		// 課程欄位資訊不存在時進入
 		if (!courseOp.isPresent()) {
 			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
 			return res;
 		}
+		
 		// 新增拿來裝查詢到課程的容器
 		Course course = courseOp.get();
 		// 設定請求的課程資訊
-		res.setCourseCode(course.getCourseCode());
-		res.setCourseName(course.getCourseName());
-		res.setCourseDay(course.getCourseDay());
-		res.setCourseStart(course.getCourseStart());
-		res.setCourseEnd(course.getCourseEnd());
-		res.setCredit(course.getCredit());
+//		res.setCourseCode(course.getCourseCode());
+//		res.setCourseName(course.getCourseName());
+//		res.setCourseDay(course.getCourseDay());
+//		res.setCourseStart(course.getCourseStart());
+//		res.setCourseEnd(course.getCourseEnd());
+//		res.setCredit(course.getCredit());
+		res.setCourseInfo(course);
 		// 回傳
 		return res;
 	}
 
 	// ===================================================================================================
-	// 透過課程名稱找課程
+	// 透過課程名稱找到課程
 	@Override
 	public AddCourseResponse findCourseByName(String courseName) {
 		// 新增回應回傳資訊
 		AddCourseResponse res = new AddCourseResponse();
+		
 		// 防呆:輸入請求不得為空
 		if (!StringUtils.hasText(courseName)) {
 			res.setMessage(CourseRtnCode.COURSENAME_REQUIRED.getMessage());
 			return res;
 		}
+
 		// 透過課程名稱找到所有相同課程名稱欄位資訊
-		List<Course> coursenamelist = courseDao.findAllByCourseName(courseName);
-		// 課程資訊不存在的話
-		if (coursenamelist.isEmpty()) {
+		List<Course> courseNameList = courseDao.findAllByCourseName(courseName);
+		// 課程資訊不存在時進入
+		if (courseNameList.isEmpty()) {
 			res.setMessage(CourseRtnCode.COURSENAME_IS_EMPTY.getMessage());
 			return res;
 		}
 
 		// 設定所有符合課程名稱的課程資訊
-		res.setCourseList(coursenamelist);
+		res.setCourseList(courseNameList);
 		// 回傳
 		return res;
 	}
@@ -242,61 +236,65 @@ public class CourseServiceImpl implements CourseService {
 	// ===================================================================================================
 	// 學生選課
 	@Override
-	public AddCourseResponse addCourse(AddCourseRequest req) {
-		AddCourseResponse res = new AddCourseResponse();
-
-		res = checkCourseInput(req, res);
+	public AddCourseResponse addStudentCourse(AddCourseRequest req) {
+		
+		// 私有防呆方法(防止輸入值為空)
+		AddCourseResponse res = checkCourseInput(req);
+		// 如有錯誤訊息時進入
 		if (StringUtils.hasText(res.getMessage())) {
 			return res;
 		}
 
-		// 輸入主鍵找到其實體資訊
+		// 透過主鍵找到其欄位資訊
 		Optional<Course> courseOp = courseDao.findById(req.getCourseCode());
-		// 如果課程代碼不存在
+		// 如果欄位資訊不存在內容
 		if (!courseOp.isPresent()) {
 			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
 			return res;
 		}
+		
 		// 拿來裝已經選好的課程
 		Course course = courseOp.get();
 		// 新增容器裝入已選課程學分
 		int totalCredit = course.getCredit();
-		// 判斷有無輸入課程代碼
-		if (!StringUtils.hasText(req.getCourseCode())) {
-			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
-			return res;
-		}
 
-		// 透過學生學號找資料庫中相對的所有欄位資料
+		// 透過學生學號找資料庫中相對的所有欄位資訊
 		List<StudentCourse> studentCourseList = studentCourseDao.findAllByStudentId(req.getStudentId());
-		// 拿來裝正在選的課程 遍歷正在選的課程
+		
+		// 遍歷正在選的課程
 		for (StudentCourse studentCourse : studentCourseList) {
+			
 			// 每次選課後學分存入已選課程學分容器
 			totalCredit += studentCourse.getCredit();
 
+			// 私有防呆方法(防止學生資訊錯誤)
 			res = checkStudentCourseInfo(req, res, studentCourse, course, totalCredit);
+			// 出現錯誤訊息時進入
 			if (StringUtils.hasText(res.getMessage())) {
 				return res;
 			}
 		}
 
+		// 裝入所有新增資訊
 		StudentCourse studentCourseEntity = new StudentCourse(req.getId(), req.getStudentId(), req.getStudentName(),
 				course.getCourseCode(), course.getCourseName(), course.getCourseDay(), course.getCourseStart(),
 				course.getCourseEnd(), course.getCredit());
 
-		// 存入資料庫
+		// 存入學生課程資料庫
 		studentCourseDao.save(studentCourseEntity);
+
 		// 設定回傳資料及訊息
 		res.setStudentId(req.getStudentId());
 		res.setCourseCode(studentCourseEntity.getCourseCode());
 		res.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
-		// 回傳大括號內所有動作過的容器
+		// 回傳
 		return res;
-
 	}
 
-	private AddCourseResponse checkCourseInput(AddCourseRequest req, AddCourseResponse res) {
-		// 防呆:輸入請求不得為空
+	// 私有防呆方法(防止輸入值為空)
+	private AddCourseResponse checkCourseInput(AddCourseRequest req) {
+		AddCourseResponse res = new AddCourseResponse();
+
 		if (!StringUtils.hasText(req.getId())) {
 			res.setMessage(CourseRtnCode.ID_REQUIRED.getMessage());
 			return res;
@@ -316,51 +314,62 @@ public class CourseServiceImpl implements CourseService {
 		return res;
 	}
 
+	// 私有防呆方法(防止學生資訊錯誤)
 	private AddCourseResponse checkStudentCourseInfo(AddCourseRequest req, AddCourseResponse res,
 			StudentCourse studentCourse, Course course, Integer totalCredit) {
+		
 		// 判斷"選好的課程"和"正在選的課程"中的id是否重複
 		if (req.getId().equalsIgnoreCase(studentCourse.getId())) {
 			res.setMessage(CourseRtnCode.ID_REPEAT.getMessage());
 			return res;
 		}
+		
 		// 判斷輸入學生學號是否相同(可以相同)
 		if (studentCourse.getStudentId().equals(req.getStudentId())) {
-			// 判斷輸入學生姓名是否相同
+			// 學生學號相同但學生姓名不相同時進入
 			if (!studentCourse.getStudentName().equals(req.getStudentName())) {
-				// 學生學號相同但學生姓名不相同時進入
-				res.setMessage(CourseRtnCode.SELECT_COURSE_ERROR.getMessage());
+				res.setMessage(CourseRtnCode.SELECT_COURSE_FAILED.getMessage());
 				return res;
 			}
 		}
+		
 		// 判斷"選好的課程"和"正在選的課程"中的課程代碼是否重複
 		if (req.getCourseCode().equalsIgnoreCase(studentCourse.getCourseCode())) {
 			// 不可選同一堂課程
 			res.setMessage(CourseRtnCode.COURSECODE_REPEAT.getMessage());
 			return res;
 		}
+		
 		// 判斷"選好的課程"和"正在選的課程"中的課程名稱是否重複
 		if (course.getCourseName().equalsIgnoreCase(studentCourse.getCourseName())) {
 			// 不可選同名稱的課程
 			res.setMessage(CourseRtnCode.COURSENAME_REPEAT.getMessage());
 			return res;
 		}
+		
 		// 判斷是否超過十學分
 		if (totalCredit > 10) {
-			res.setMessage(CourseRtnCode.SELECT_COURSE_ERROR.getMessage());
+			res.setMessage(CourseRtnCode.SELECT_COURSE_FAILED.getMessage());
 			return res;
 		}
+		
 		// 判斷"選好的課程"和"正在選的課程"中的上課日是否重複再比較上課時間是否重疊
 		if (course.getCourseDay().equals(studentCourse.getCourseDay())) {
 			boolean time1 = course.getCourseStart().isAfter(studentCourse.getCourseStart())
 					&& course.getCourseStart().isBefore(studentCourse.getCourseEnd());
+
 			boolean time2 = course.getCourseEnd().isAfter(studentCourse.getCourseStart())
 					&& course.getCourseEnd().isBefore(studentCourse.getCourseEnd());
+
 			boolean time3 = course.getCourseStart().isBefore(studentCourse.getCourseStart())
 					&& course.getCourseEnd().isAfter(studentCourse.getCourseEnd());
+
 			boolean time4 = course.getCourseStart().equals(studentCourse.getCourseStart())
 					&& course.getCourseEnd().equals(studentCourse.getCourseEnd());
+
+			// 其一為true時進入
 			if (time1 || time2 || time3 || time4) {
-				res.setMessage(CourseRtnCode.SELECT_COURSE_ERROR.getMessage());
+				res.setMessage(CourseRtnCode.SELECT_COURSE_FAILED.getMessage());
 				return res;
 			}
 		}
@@ -370,10 +379,10 @@ public class CourseServiceImpl implements CourseService {
 	// ===================================================================================================
 	// 學生退課
 	@Override
-	public AddCourseResponse dropCourse(String studentId, String courseCode) {
+	public AddCourseResponse dropStudentCourse(String studentId, String courseCode) {
 		// 新增回應回傳容器
 		AddCourseResponse res = new AddCourseResponse();
-		
+
 		// 防呆:輸入請求不得為空
 		if (!StringUtils.hasText(studentId)) {
 			res.setMessage(CourseRtnCode.STUDENTID_REQUIRED.getMessage());
@@ -383,25 +392,27 @@ public class CourseServiceImpl implements CourseService {
 			res.setMessage(CourseRtnCode.COURSECODE_REQUIRED.getMessage());
 			return res;
 		}
-		
-		
+
 		// 透過學生學號找到多筆學生選課資訊存入list容器(學生不只選一堂課會找到多個相同學生學號所以用list)
 		List<StudentCourse> studentlist = studentCourseDao.findByStudentId(studentId);
-		// 如果資料庫沒有輸入學生學號時進入
+		// 如果資料庫為空時進入
 		if (studentlist.isEmpty()) {
 			res.setMessage(CourseRtnCode.STUDENTID_IS_EMPTY.getMessage());
 			return res;
 		}
 
-		// 如果有的話遍歷多筆相同學生學號找到的課程資訊裝入studentInfo
+		// 反之遍歷此學生所選的所有課程資訊
 		for (StudentCourse studentInfo : studentlist) {
+
 			// 如果此學生課程代碼符合輸入課程代碼
 			if (studentInfo.getCourseCode().equals(courseCode)) {
+
 				// 刪除課程
 				studentCourseDao.deleteByCourseCode(courseCode);
 				res.setMessage(CourseRtnCode.SUCCESSFUL.getMessage());
 				return res;
 			}
+			
 			// 如果此學生課程代碼不符合輸入課程代碼
 			res.setMessage(CourseRtnCode.DELETE_COURSE_FAILED.getMessage());
 		}
@@ -409,9 +420,9 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	// ===================================================================================================
-	/// 透過學生學號找學生所選課程
+	/// 透過學生學號找到學生所選課程
 	@Override
-	public StudentResponse findStudentLesson(String studentId) {
+	public StudentResponse findStudentCourse(String studentId) {
 		// 新增回應回傳容器
 		StudentResponse res = new StudentResponse();
 		// 防呆:輸入請求不得為空
@@ -419,6 +430,7 @@ public class CourseServiceImpl implements CourseService {
 			res.setMessage(CourseRtnCode.STUDENTID_REQUIRED.getMessage());
 			return res;
 		}
+
 		// 將利用學生學號找到此學生選的所有課程存入此容器
 		List<StudentCourse> studentList = studentCourseDao.findAllByStudentId(studentId);
 		// 判斷此容器是否為空
@@ -426,6 +438,7 @@ public class CourseServiceImpl implements CourseService {
 			res.setMessage(CourseRtnCode.STUDENTID_IS_EMPTY.getMessage());
 			return res;
 		}
+		
 		// 有課程的話裝進list中
 		res.setStudentlist(studentList);
 		// 回傳list
