@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.course_project.Interface.CourseService;
+import com.example.course_project.Ifs.CourseService;
 import com.example.course_project.vo.AddCourseRequest;
 import com.example.course_project.vo.AddCourseResponse;
 import com.example.course_project.vo.CourseRequest;

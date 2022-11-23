@@ -1,4 +1,4 @@
-package com.example.course_project.Implement;
+package com.example.course_project.Impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.example.course_project.Interface.CourseService;
+import com.example.course_project.Ifs.CourseService;
 import com.example.course_project.constants.CourseRtnCode;
 import com.example.course_project.entity.Course;
 import com.example.course_project.entity.StudentCourse;
@@ -186,6 +186,7 @@ public class CourseServiceImpl implements CourseService {
 
 		// 透過課程代碼(PK)找相對課程資訊存入
 		Optional<Course> courseOp = courseDao.findById(courseCode);
+		
 		// 課程欄位資訊不存在時進入
 		if (!courseOp.isPresent()) {
 			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
@@ -221,6 +222,7 @@ public class CourseServiceImpl implements CourseService {
 
 		// 透過課程名稱找到所有相同課程名稱欄位資訊
 		List<Course> courseNameList = courseDao.findAllByCourseName(courseName);
+		
 		// 課程資訊不存在時進入
 		if (courseNameList.isEmpty()) {
 			res.setMessage(CourseRtnCode.COURSENAME_IS_EMPTY.getMessage());
@@ -234,7 +236,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	// ===================================================================================================
-	// 學生選課
+	// 學生選課(包含新增學生資訊)
 	@Override
 	public AddCourseResponse addStudentCourse(AddCourseRequest req) {
 		
@@ -247,6 +249,7 @@ public class CourseServiceImpl implements CourseService {
 
 		// 透過主鍵找到其欄位資訊
 		Optional<Course> courseOp = courseDao.findById(req.getCourseCode());
+		
 		// 如果欄位資訊不存在內容
 		if (!courseOp.isPresent()) {
 			res.setMessage(CourseRtnCode.COURSECODE_IS_EMPTY.getMessage());
@@ -255,13 +258,14 @@ public class CourseServiceImpl implements CourseService {
 		
 		// 拿來裝已經選好的課程
 		Course course = courseOp.get();
+		
 		// 新增容器裝入已選課程學分
 		int totalCredit = course.getCredit();
 
 		// 透過學生學號找資料庫中相對的所有欄位資訊
 		List<StudentCourse> studentCourseList = studentCourseDao.findAllByStudentId(req.getStudentId());
 		
-		// 遍歷正在選的課程
+		// 遍歷已選的課程
 		for (StudentCourse studentCourse : studentCourseList) {
 			
 			// 每次選課後學分存入已選課程學分容器
@@ -380,6 +384,7 @@ public class CourseServiceImpl implements CourseService {
 	// 學生退課
 	@Override
 	public AddCourseResponse dropStudentCourse(String studentId, String courseCode) {
+		
 		// 新增回應回傳容器
 		AddCourseResponse res = new AddCourseResponse();
 
@@ -395,6 +400,7 @@ public class CourseServiceImpl implements CourseService {
 
 		// 透過學生學號找到多筆學生選課資訊存入list容器(學生不只選一堂課會找到多個相同學生學號所以用list)
 		List<StudentCourse> studentlist = studentCourseDao.findByStudentId(studentId);
+		
 		// 如果資料庫為空時進入
 		if (studentlist.isEmpty()) {
 			res.setMessage(CourseRtnCode.STUDENTID_IS_EMPTY.getMessage());
@@ -420,11 +426,13 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	// ===================================================================================================
-	/// 透過學生學號找到學生所選課程
+	// 透過學生學號找到學生所選課程
 	@Override
 	public StudentResponse findStudentCourse(String studentId) {
+		
 		// 新增回應回傳容器
 		StudentResponse res = new StudentResponse();
+		
 		// 防呆:輸入請求不得為空
 		if (!StringUtils.hasText(studentId)) {
 			res.setMessage(CourseRtnCode.STUDENTID_REQUIRED.getMessage());
@@ -433,6 +441,7 @@ public class CourseServiceImpl implements CourseService {
 
 		// 將利用學生學號找到此學生選的所有課程存入此容器
 		List<StudentCourse> studentList = studentCourseDao.findAllByStudentId(studentId);
+		
 		// 判斷此容器是否為空
 		if (studentList.isEmpty()) {
 			res.setMessage(CourseRtnCode.STUDENTID_IS_EMPTY.getMessage());

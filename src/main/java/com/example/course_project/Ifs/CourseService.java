@@ -1,4 +1,4 @@
-package com.example.course_project.Interface;
+package com.example.course_project.Ifs;
 
 import com.example.course_project.vo.AddCourseRequest;
 import com.example.course_project.vo.AddCourseResponse;
