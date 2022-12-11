@@ -2,33 +2,34 @@ package com.example.course_project.constants;
 
 public enum CourseRtnCode {
 
-	SUCCESSFUL("200", "Successful"),
+	//加註解 狀態代碼
+	SUCCESSFUL("200", "成功!!"),
 	
 	SELECT_COURSE_FAILED("400", "Select course failed!!"),
 	
 	DELETE_COURSE_FAILED("400", "Delete course failed!!"),
 	
-	COURSECODE_REQUIRED("400", "Coursecode is required!!"),
+	COURSECODE_REQUIRED("400", "請輸入課程代碼!!"),
 	
-	COURSECODE_REPEAT("400", "Coursecode is repeat!!"),
+	COURSECODE_REPEAT("400", "課程代碼重複!!"),
 	
 	COURSECODE_IS_EMPTY("400", "This coursecode is empty!!"),
 	
-	COURSENAME_REQUIRED("400", "Coursename is required!!"),
+	COURSENAME_REQUIRED("400", "請輸入課程名稱!!"),
 	
 	COURSENAME_REPEAT("400", "Coursename is repeat!!"),
 	
 	COURSENAME_IS_EMPTY("400", "This coursename is empty!!"),
 	
-	COURSEDAY_REQUIRED("400", "Courseday is required!!"),
+	COURSEDAY_REQUIRED("400", "請輸入課程日!!"),
 	
-	COURSEDAY_FAILED("400", "Courseday is failed!!"),
+	COURSEDAY_FAILED("400", "請輸入正確課程日!!"),
 	
-	COURSESTARTTIME_REQUIRED("400", "Coursestarttime is required!!"),
+	COURSESTART_REQUIRED("400", "請輸入課程開始時間!!"),
 	
-	COURSEENDTIME_REQUIRED("400", "Courseendtime is required!!"),
+	COURSEEND_REQUIRED("400", "請輸入課程結束時間!!"),
 	
-	CREDIT_REQUIRED("400", "Credit is required!!"),
+	CREDIT_REQUIRED("400", "請輸入課程學分!!"),
 	
 	ID_REQUIRED("400", "Id is required!!"),
 	
